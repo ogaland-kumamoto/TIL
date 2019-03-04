@@ -1,0 +1,95 @@
+!define MASTER_MARK_COLOR #FF7400
+!define TABLE_MARK_COLOR #FFFFFF
+!define CT_MARK_COLOR #FFFFFF
+!define VIEW_MARK_COLOR #2E9AFE
+
+
+entity 認可管理情報VIEW <view_authorization_control><<(V,VIEW_MARK_COLOR)>>{
+IDやコード等の翻訳を含んだ情報を含むVIEW
+}
+
+package org001(OSS用DB：PostgreSQL)<<Rectangle >>{
+entity OSSユーザーマスタ<v_user_list> <<(M,MASTER_MARK_COLOR)>> {
++ ユーザーID(user_id)
+ログイン名(login_name)
+パスワード(password_value)
+名(first_name)
+姓(last_name)
+--
+役職(?)
+}
+}
+
+entity 認可管理マスタ<tbl_ms0011_authorization_control> <<(M,MASTER_MARK_COLOR)>> {
++ シーケンス(ms0011_id)
+# サービスコード(ms0011_service_code)
+# グループID(ms0011_group_id)
+# ロールコード(ms0011_role_code)
+# 店舗コード(ms0011_shop_code)
+# ログイン名(ms0011_login_name)
+--
+}
+
+package ユーザーマスタ同期機能<<Rectangle >>{
+}
+
+entity サービスマスタ<tbl_ms0012_service> <<(M,MASTER_MARK_COLOR)>> {
++ サービスコード(ms0012_service_code)
+--
+サービス名(ms0012_service_name)
+}
+
+package グループ管理<<Rectangle>> {
+  entity グループマスタ<tbl_ms0014_group> <<(M,MASTER_MARK_COLOR)>> {
+ + サービスコード(ms0014_service_code)
+ + グループID(ms0014_group_id)
+--
+# ロールコード(ms0014_role_code)
+# グループ名(	ms0014_group_name)
+  }
+
+  entity グループ店舗マスタ<tbl_ms0015_group_shop> <<(M,MASTER_MARK_COLOR)>> {
+ + サービスコード(ms0015_service_code)
+ + グループID(ms0015_group_id)
+--
+ # 店舗コード(ms0015_shop_code)
+  }
+
+  entity グループスタッフマスタ<tbl_ms0016_group_staff> <<(M,MASTER_MARK_COLOR)>> {
+ + サービスコード(ms0016_service_code)
+ + グループID(ms0016_group_id)
+--
+ # ログイン名(ms0016_login_name)
+  }
+
+}
+
+entity ロールマスタ<tbl_ms0013_role> <<(M,MASTER_MARK_COLOR)>> {
++ ロールコード(ms0013_role_code)
+--
+ロールランク(ms0013_role_rank)
+ロール説明(ms0013_role_description)
+権限コード(ms0013_permission_code)
+}
+
+entity スタッフマスタ<tbl_ms0010_staff> <<(M,MASTER_MARK_COLOR)>> {
++ ログイン名(login_name)
+--
+スタッフ属性
+}
+
+entity 店舗マスタ<tbl_ms0050_shop> <<(M,MASTER_MARK_COLOR)>> {
+# 店舗コード(ms0050_shop_code)
+--
+}
+
+ユーザーマスタ同期機能 -- スタッフマスタ
+認可管理情報VIEW <- 認可管理マスタ
+認可管理マスタ --|{ サービスマスタ
+認可管理マスタ --|{ グループマスタ
+認可管理マスタ --|{ グループ店舗マスタ
+認可管理マスタ --|{ グループスタッフマスタ
+認可管理マスタ --|{ スタッフマスタ
+認可管理マスタ --|{ ロールマスタ
+認可管理マスタ --|{ 店舗マスタ
+OSSユーザーマスタ -- ユーザーマスタ同期機能
