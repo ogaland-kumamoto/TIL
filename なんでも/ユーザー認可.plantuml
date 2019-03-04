@@ -1,3 +1,5 @@
+@startuml
+
 !define MASTER_MARK_COLOR #FF7400
 !define TABLE_MARK_COLOR #FFFFFF
 !define CT_MARK_COLOR #FFFFFF
@@ -93,3 +95,4 @@ entity 店舗マスタ<tbl_ms0050_shop> <<(M,MASTER_MARK_COLOR)>> {
 認可管理マスタ --|{ ロールマスタ
 認可管理マスタ --|{ 店舗マスタ
 OSSユーザーマスタ -- ユーザーマスタ同期機能
+@enduml
